@@ -58,12 +58,10 @@ class ExpandableCardViewAdapter(var items: MutableList<Item>)
                         })
 
                         if (nextHeader == -1) nextHeader = items.size
-                        item.children = items.slice(IntRange(start, nextHeader - 1))
+                        item.children = items.slice(start..nextHeader - 1)
 
                         val end = item.children!!.size
-                        if (end > 0) {
-                            items.removeAll(item.children!!)
-                        }
+                        if (end > 0) items.removeAll(item.children!!)
 
                         view.animate().rotation(CLOSE).start()
                         notifyItemRangeRemoved(start, end)
