@@ -1,13 +1,9 @@
 package com.example.l.expandable_cardview
 
 import android.support.v7.widget.RecyclerView
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.animation.Animation
-import android.view.animation.AnimationUtils
-import com.example.l.expandable_cardview.R
 import kotlinx.android.synthetic.main.cardview_parent.view.*
 
 /**
@@ -16,12 +12,11 @@ import kotlinx.android.synthetic.main.cardview_parent.view.*
 
 class ExpandableCardViewAdapter(var items: MutableList<Item>)
     : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
-
     companion object {
         val PARENT = 0
         val CHILD = 1
-        val OPEN = 180.0F
-        val CLOSE = 0.0F
+        val OPEN = 0.0F
+        val CLOSE = 180.0F
     }
 
     data class Item(val type: Int = 0,
@@ -37,7 +32,7 @@ class ExpandableCardViewAdapter(var items: MutableList<Item>)
         val inflater = LayoutInflater.from(parent?.context)
         var view: View? = null
 
-        when(viewType) {
+        when (viewType) {
             PARENT -> view = inflater.inflate(R.layout.cardview_parent, parent, false)
             CHILD -> view = inflater.inflate(R.layout.cardview_child, parent, false)
         }
@@ -52,36 +47,33 @@ class ExpandableCardViewAdapter(var items: MutableList<Item>)
         itemHolder?.let {
             it.toggleImageView?.let {
                 it.setImageResource(R.drawable.toggle)
-
-                items[position].children?.let { c ->
-                    it.rotation = OPEN
-                }
+                it.rotation = if (item.children == null) OPEN else CLOSE
 
                 it.setOnClickListener { view ->
-                    val currentIndex = items.indexOf(item) + 1
-
-                    if(it.rotation == OPEN) {
-                        item.children?.let {
-                            items.addAll(currentIndex, it)
-
-                            view.animate().rotation(CLOSE).start()
-                            notifyItemRangeInserted(currentIndex, it.size)
-                            item.children = null
-                        }
-                    } else if(it.rotation == CLOSE){
+                    val start = items.indexOf(item) + 1
+                    if (item.children == null) {
                         var count = 0
                         var nextHeader = items.indexOf(items.find {
-                            (count++ >= currentIndex) && (it.type == item.type)
+                            (count++ >= start) && (it.type == item.type)
                         })
 
                         if (nextHeader == -1) nextHeader = items.size
-                        item.children = items.slice(IntRange(currentIndex, nextHeader - 1))
+                        item.children = items.slice(IntRange(start, nextHeader - 1))
 
-                        val childrenSize = item.children!!.size
-                        if(childrenSize > 0) items.removeAll(item.children!!)
+                        val end = item.children!!.size
+                        if (end > 0) {
+                            items.removeAll(item.children!!)
+                        }
 
-                        view.animate().rotation(OPEN).start()
-                        notifyItemRangeRemoved(currentIndex, childrenSize)
+                        view.animate().rotation(CLOSE).start()
+                        notifyItemRangeRemoved(start, end)
+                    } else {
+                        item.children?.let {
+                            items.addAll(start, it)
+                            view.animate().rotation(OPEN).start()
+                            notifyItemRangeInserted(start, it.size)
+                            item.children = null
+                        }
                     }
                 }
             }

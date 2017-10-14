@@ -31,9 +31,6 @@ class MainActivity : AppCompatActivity() {
                 ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Oreo"))
         itemList.add(item)
 
-        itemList.add(ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.PARENT, "Test Parent"))
-        itemList.add(ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Test Child 1"))
-
         itemList.add(ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.PARENT, "NoteBook"))
         itemList.add(ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "MS Surface Pro 4"))
         itemList.add(ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Google Pixel Book"))
@@ -45,6 +42,20 @@ class MainActivity : AppCompatActivity() {
         itemList.add(ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Google Pixel XL 2"))
         itemList.add(ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Samsung Galaxy Note 8"))
         itemList.add(ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "LG V30"))
+
+        val nation = ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.PARENT, "Nation")
+        nation.children = listOf(
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Republic Of Korea"),
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Canada"),
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "America"),
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Japan"),
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Denmark"),
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Britain"),
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "China"),
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Russia"),
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "France"),
+                ExpandableCardViewAdapter.Item(ExpandableCardViewAdapter.CHILD, "Turkey"))
+        itemList.add(nation)
 
         cardView.layoutManager = LinearLayoutManager(this)
         cardView.adapter = ExpandableCardViewAdapter(itemList)
